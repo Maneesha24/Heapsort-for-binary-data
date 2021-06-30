@@ -4,19 +4,20 @@
  * 
  * @author maneesha24@vt.edu
  * @version 1.0
- * @param <E> generic
+ * @param <E>
+ *            generic
  *            java type
  */
-public class DoublyLinkedList<E> {
+public class CustomDoublyLinkedList<E> {
 
     /**
      * This node represents the value of the head in the doubly linked list
      */
-    private Node<E> headNode;
+    private CustomNode<E> headNode;
     /**
      * This node represents the value of the tail in the doubly linked list
      */
-    private Node<E> tailNode;
+    private CustomNode<E> tailNode;
 
     /**
      * This method initializes the DoublyLinkedList class with nodes holding
@@ -26,15 +27,15 @@ public class DoublyLinkedList<E> {
      *            holds the value of the size of the list
      * 
      */
-    public DoublyLinkedList(int num) {
-        headNode = new Node<E>(null);
-        tailNode = new Node<E>(null);
-        
+    public CustomDoublyLinkedList(int num) {
+        headNode = new CustomNode<E>(null);
+        tailNode = new CustomNode<E>(null);
+
         headNode.setNextNode(tailNode);
         tailNode.setPreviousNode(headNode);
-        
+
         for (int i = 1; i <= num; i++) {
-            Node<E> nullNode = new Node<E>(null);
+            CustomNode<E> nullNode = new CustomNode<E>(null);
             headNode.getNextNode().setPreviousNode(nullNode);
             nullNode.setNextNode(headNode.getNextNode());
             nullNode.setPreviousNode(headNode);
@@ -54,7 +55,7 @@ public class DoublyLinkedList<E> {
      */
     public E shiftAddNode(E data) {
 
-        Node<E> node = headNode;
+        CustomNode<E> node = headNode;
         while ((node = node.getNextNode()) != tailNode) {
             if (data.equals(node.getData())) {
                 node.getNextNode().setPreviousNode(node.getPreviousNode());
@@ -81,13 +82,13 @@ public class DoublyLinkedList<E> {
      * @return the data of the last node
      */
     public E addNode(E data) {
-        Node<E> node = new Node<E>(data);
+        CustomNode<E> node = new CustomNode<E>(data);
         node.setPreviousNode(headNode);
         node.setNextNode(headNode.getNextNode());
         headNode.getNextNode().setPreviousNode(node);
         headNode.setNextNode(node);
 
-        Node<E> last = tailNode.getPreviousNode();
+        CustomNode<E> last = tailNode.getPreviousNode();
         last.getPreviousNode().setNextNode(tailNode);
         tailNode.setPreviousNode(last.getPreviousNode());
         return last.getData();

@@ -4,4 +4,4 @@ Cache Hits: 310034
 Cache Misses: 12405
 Disk Reads: 12405
 Disk Writes: 12405
-Time to Sort: 108
+Time to Sort: 126

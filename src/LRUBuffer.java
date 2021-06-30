@@ -10,24 +10,25 @@ import java.io.RandomAccessFile;
 public class LRUBuffer {
     private LRUBufferPool pool;
     private RandomAccessFile file;
-    private int offset;
-    private int size;
-    private byte[] data;
     private boolean bufferUsed = false;
+    private int size;
+    private int offset;
     private boolean taken = false;
     private UtilsFunc utils;
+    private byte[] data;
 
     /**
      * This method is used to initialize the buffer with the arguments
      * 
      * @param bufferPool
      *            is the value of the buffer pool
-     * @param file
+     * @param fileName
      *            random access file
-     * @param offset
+     * @param offsetValue
      *            offset of buffer
-     * @param size
+     * @param sizeValue
      *            size of buffer
+     * @param utilsValue holds the util function
      */
     public LRUBuffer(
         LRUBufferPool bufferPool,

@@ -6,12 +6,12 @@
  * @param <E>
  *            generic java type
  */
-public class Node<E> {
+public class CustomNode<E> {
 
     /**
      * This node represents the value of the previous node
      */
-    private Node<E> previousNode;
+    private CustomNode<E> previousNode;
     /**
      * This dataValue holds the value of the data in the node
      */
@@ -20,7 +20,7 @@ public class Node<E> {
     /**
      * This node represents the value of the next node
      */
-    private Node<E> nextNode;
+    private CustomNode<E> nextNode;
 
     /**
      * This sets a new node with the given value
@@ -28,7 +28,7 @@ public class Node<E> {
      * @param value
      *            value of the node to be set with
      */
-    Node(E value) {
+    CustomNode(E value) {
         dataValue = value;
     }
 
@@ -39,7 +39,7 @@ public class Node<E> {
      * @param nextNodeValue
      *            value of the next node value
      */
-    public void setNextNode(Node<E> nextNodeValue) {
+    public void setNextNode(CustomNode<E> nextNodeValue) {
         nextNode = nextNodeValue;
     }
 
@@ -50,7 +50,7 @@ public class Node<E> {
      * @param previousNodeValue
      *            value of the previous node value
      */
-    public void setPreviousNode(Node<E> previousNodeValue) {
+    public void setPreviousNode(CustomNode<E> previousNodeValue) {
         previousNode = previousNodeValue;
     }
 
@@ -60,7 +60,7 @@ public class Node<E> {
      * 
      * @return returns previous node variable value
      */
-    public Node<E> getPreviousNode() {
+    public CustomNode<E> getPreviousNode() {
         return previousNode;
     }
 
@@ -70,7 +70,7 @@ public class Node<E> {
      * 
      * @return returns next node variable value
      */
-    public Node<E> getNextNode() {
+    public CustomNode<E> getNextNode() {
         return nextNode;
     }
 

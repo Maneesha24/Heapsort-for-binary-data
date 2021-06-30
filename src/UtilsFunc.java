@@ -2,12 +2,31 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * This UtilsFunc class holds all the variable such as hits, misses, reads and
+ * writes and records their values to be outputted to a stats file
+ * 
+ * @author maneesha24@vt.edu
+ * @version 1.0
+ */
 public class UtilsFunc {
 
-    public static int hits = 0;
-    public static int misses = 0;
-    public static int reads = 0;
-    public static int writes = 0;
+    /**
+     * This variable holds the value of cache hits
+     */
+    private int hits = 0;
+    /**
+     * This variable holds the value of misses
+     */
+    private int misses = 0;
+    /**
+     * This variable holds the value of disk reads
+     */
+    private int reads = 0;
+    /**
+     * This variable holds the value of disk writes
+     */
+    private int writes = 0;
 
     /**
      * This is the method that increments the value of misses by
@@ -98,10 +117,18 @@ public class UtilsFunc {
      * prints the values of hits, misses, writes and time to sort.
      * 
      * @throws IOException
-     * @param outputFileName
+     * @param outputFilename
      *            is the name of the file to be created
+     * @param inputFileName
+     *            is the name of the input file
+     * @param timeTaken
+     *            is the difference between the start and the end time of
+     *            sorting
      */
-    public void outputStatsFile(String outputFilename, String inputFileName, int timeTaken)
+    public void outputStatsFile(
+        String outputFilename,
+        String inputFileName,
+        int timeTaken)
         throws IOException {
 
         BufferedWriter outputFile = new BufferedWriter(new FileWriter(
@@ -109,9 +136,9 @@ public class UtilsFunc {
         outputFile.write("------  STATS ------\n");
         outputFile.write("File name: " + inputFileName + "\n");
         outputFile.write("Cache Hits: " + getHitsValue() + "\n");
-        outputFile.write("Cache Misses: " + misses + "\n");
-        outputFile.write("Disk Reads: " + reads + "\n");
-        outputFile.write("Disk Writes: " + writes + "\n");
+        outputFile.write("Cache Misses: " + getMissesValue() + "\n");
+        outputFile.write("Disk Reads: " + getReadsValue() + "\n");
+        outputFile.write("Disk Writes: " + getWritesValue() + "\n");
         outputFile.write("Time to Sort: " + timeTaken + "\n");
         outputFile.close();
     }

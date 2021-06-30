@@ -2,11 +2,29 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+/**
+ * A CustomHeap class implements a custom heap class holding sort and swapping
+ * methods package
+ * 
+ * @author maneesha24@vt.edu
+ * @version 1.0
+ */
 public class CustomHeap {
 
-    private static LRUBufferPool bufferPool;
-    private static int heapSize;
+    private LRUBufferPool bufferPool;
+    private int heapSize;
 
+    /**
+     * The method initializes the custom heap class taking the arguments
+     * 
+     * @param fileName
+     *            name of the input file
+     * @param num
+     *            holds the value of num of buffers
+     * @param utils
+     *            holds the utils functions and methods
+     * @throws IOException
+     */
     public CustomHeap(String fileName, int num, UtilsFunc utils)
         throws IOException {
         bufferPool = new LRUBufferPool(new File(fileName), num, utils);
@@ -30,7 +48,7 @@ public class CustomHeap {
      * 
      * @return the value of the total number of records present
      */
-    public static int getNumOfRecords() {
+    public int getNumOfRecords() {
         return bufferPool.getSize() * 1024;
     }
 
@@ -46,8 +64,8 @@ public class CustomHeap {
         }
 
         for (int i = 0; i < getNumOfRecords(); i++) {
-            swapValues(0, heapSize - 1);
             heapSize--;
+            swapValues(0, heapSize);
             shiftValues(0);
         }
     }
@@ -60,9 +78,9 @@ public class CustomHeap {
      *            the index of the node to shiftdown
      * @throws IOException
      */
-    public static void shiftValues(int index) throws IOException {
+    public void shiftValues(int index) throws IOException {
 
-        if ((index >= heapSize) || index < 0) {
+        if ((index >= heapSize)) {
             return;
         }
 
@@ -94,7 +112,7 @@ public class CustomHeap {
      * @return the value of the key
      * @throws IOException
      */
-    public static short getKeyValue(int indexVal) throws IOException {
+    public short getKeyValue(int indexVal) throws IOException {
         int block = indexVal / 1024;
         int offset = (indexVal * 4) % 4096;
         byte[] buffer = bufferPool.getBuffer(block).readBlock();
@@ -110,7 +128,7 @@ public class CustomHeap {
      * @return value at index
      * @throws IOException
      */
-    public static short getValue(int index) throws IOException {
+    public short getValue(int index) throws IOException {
         int blockVal = index / 1024;
         int offsetVal = (index * 4) % 4096;
         byte[] buffer = bufferPool.getBuffer(blockVal).readBlock();
@@ -127,8 +145,7 @@ public class CustomHeap {
      *            second number to be swapped
      * @throws IOException
      */
-    public static void swapValues(int firstValue, int secondValue)
-        throws IOException {
+    public void swapValues(int firstValue, int secondValue) throws IOException {
 
         LRUBuffer firstBuffer = bufferPool.getBuffer(firstValue / 1024);
         LRUBuffer secondBuffer = bufferPool.getBuffer(secondValue / 1024);
@@ -164,9 +181,12 @@ public class CustomHeap {
      */
     public void printOutput() throws IOException {
         int records = getNumOfRecords() / 1024;
-        for (int i = 1; i <= records; i++) {
-            System.out.print(getKeyValue((i - 1) * 1024) + " " + getValue((i
-                - 1) * 1024) + " ");
+        for (int i = 0; i < records; i++) {
+            System.out.print(getKeyValue((i) * 1024) + " " + getValue((i)
+                * 1024) + " ");
+            if (((i + 1) % 8 == 0)) {
+                System.out.print("\n");
+            }
         }
     }
 }

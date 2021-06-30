@@ -11,7 +11,7 @@ import java.io.RandomAccessFile;
 public class LRUBufferPool {
 
     private RandomAccessFile fileDisk;
-    private DoublyLinkedList<LRUBuffer> lruBuffer;
+    private CustomDoublyLinkedList<LRUBuffer> lruBuffer;
     private LRUBuffer[] pool;
     private int sizeValue;
     private UtilsFunc utilsFunc;
@@ -23,6 +23,8 @@ public class LRUBufferPool {
      *            file to be sorted
      * @param num
      *            is the number of buffers
+     * @param utils
+     *            utilsfunction class
      * @throws IOException
      *             thrown if file doesnt exist
      */
@@ -31,7 +33,7 @@ public class LRUBufferPool {
         fileDisk = new RandomAccessFile(file, "rw");
         sizeValue = ((int)fileDisk.length() / 4096);
         pool = new LRUBuffer[sizeValue];
-        lruBuffer = new DoublyLinkedList<LRUBuffer>(num);
+        lruBuffer = new CustomDoublyLinkedList<LRUBuffer>(num);
         utilsFunc = utils;
     }
 
