@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 /**
- * The Buffer class implements a buffer
+ * The LRUBuffer class implements a buffer
  * 
  * @author maneesha24@vt.edu
  * @version 1.0
@@ -10,8 +10,8 @@ import java.io.RandomAccessFile;
 public class LRUBuffer {
     private LRUBufferPool pool;
     private RandomAccessFile file;
-    private boolean bufferUsed = false;
-    private int size;
+    private Boolean bufferUsed = false;
+    private int length;
     private int offset;
     private boolean taken = false;
     private UtilsFunc utils;
@@ -22,54 +22,28 @@ public class LRUBuffer {
      * 
      * @param bufferPool
      *            is the value of the buffer pool
-     * @param fileName
+     * @param fileDisk
      *            random access file
      * @param offsetValue
      *            offset of buffer
      * @param sizeValue
      *            size of buffer
-     * @param utilsValue holds the util function
+     * @param utilsValue
+     *            holds the util function
      */
     public LRUBuffer(
         LRUBufferPool bufferPool,
-        RandomAccessFile fileName,
+        RandomAccessFile fileDisk,
         int offsetValue,
         int sizeValue,
         UtilsFunc utilsValue) {
 
         pool = bufferPool;
-        file = fileName;
+        length = sizeValue;
+        file = fileDisk;
         offset = offsetValue;
-        size = sizeValue;
         utils = utilsValue;
 
-    }
-
-
-    /**
-     * This methods reads the data from the block from the input file
-     * 
-     * @return the block data stored
-     * @throws IOException
-     */
-    public byte[] readBlock() throws IOException {
-        pool.getUsed(this);
-        if (!taken) {
-            utils.incrementMisses();
-
-            data = new byte[size];
-            utils.incrementReads();
-
-            file.seek(offset);
-            file.read(data);
-
-            taken = true;
-            bufferUsed = false;
-        }
-        else {
-            utils.incrementHits();
-        }
-        return data;
     }
 
 
@@ -83,6 +57,7 @@ public class LRUBuffer {
     public void bufferWrite(byte[] byteValue) throws IOException {
         pool.getUsed(this);
         this.data = byteValue;
+        // Sets the value of taken and if the buffer is filled/user to true
         this.taken = true;
         this.bufferUsed = true;
     }
@@ -94,16 +69,53 @@ public class LRUBuffer {
      * @throws IOException
      */
     public void flushBuffer() throws IOException {
-
-        if (bufferUsed) {
-            utils.incrementWrites();
-            file.seek(offset);
-            file.write(data);
-            bufferUsed = false;
-        }
-
+        // Increment the number of disk writes
+        utils.incrementWrites();
+        // Seek sets the current file position in the stream to be the
+        // offset value
+        file.seek(offset);
+        // writes bytes from the specified byte array starting at offset
+        // off to this file
+        file.write(data);
+        // Reset the bufferUsed variable once written
+        bufferUsed = false;
+        // Once flushed, assign the data to be null and buffer position filled
+        // taken variable to be null
         data = null;
         taken = false;
+    }
+
+
+    /**
+     * This methods reads the data from the block from the input file
+     * 
+     * @return the block data stored
+     * @throws IOException
+     */
+    public byte[] readBlock() throws IOException {
+        pool.getUsed(this);
+        // Check if the buffer position is filled
+        if (!taken) {
+            // Increment the number of misses
+            utils.incrementMisses();
+
+            data = new byte[length];
+            // Increment the number of disk reads
+            utils.incrementReads();
+
+            // Seek sets the current file position in the stream to be the
+            // offset value
+            file.seek(offset);
+            file.read(data);
+
+            taken = true;
+            bufferUsed = false;
+        }
+        else {
+            // Increment the number of cache hits
+            utils.incrementHits();
+        }
+        return data;
     }
 
 

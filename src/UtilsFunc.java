@@ -131,6 +131,8 @@ public class UtilsFunc {
         int timeTaken)
         throws IOException {
 
+        // BufferedWriter is used to write text to the file. The fileName is the
+        // argument provided
         BufferedWriter outputFile = new BufferedWriter(new FileWriter(
             outputFilename));
         outputFile.write("------  STATS ------\n");
@@ -140,6 +142,7 @@ public class UtilsFunc {
         outputFile.write("Disk Reads: " + getReadsValue() + "\n");
         outputFile.write("Disk Writes: " + getWritesValue() + "\n");
         outputFile.write("Time to Sort: " + timeTaken + "\n");
+        // Close flushes the text from buffer streams and then closes the files
         outputFile.close();
     }
 

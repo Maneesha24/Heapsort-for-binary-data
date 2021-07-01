@@ -3,24 +3,24 @@
  * 
  * @author maneesha24@vt.edu
  * @version 1.0
- * @param <E>
+ * @param <Heap>
  *            generic java type
  */
-public class CustomNode<E> {
+public class CustomNode<Heap> {
 
     /**
      * This node represents the value of the previous node
      */
-    private CustomNode<E> previousNode;
+    private CustomNode<Heap> previousNode;
     /**
      * This dataValue holds the value of the data in the node
      */
-    private E dataValue;
+    private Heap dataValue;
 
     /**
      * This node represents the value of the next node
      */
-    private CustomNode<E> nextNode;
+    private CustomNode<Heap> nextNode;
 
     /**
      * This sets a new node with the given value
@@ -28,7 +28,7 @@ public class CustomNode<E> {
      * @param value
      *            value of the node to be set with
      */
-    CustomNode(E value) {
+    CustomNode(Heap value) {
         dataValue = value;
     }
 
@@ -39,7 +39,7 @@ public class CustomNode<E> {
      * @param nextNodeValue
      *            value of the next node value
      */
-    public void setNextNode(CustomNode<E> nextNodeValue) {
+    public void setNextNode(CustomNode<Heap> nextNodeValue) {
         nextNode = nextNodeValue;
     }
 
@@ -50,7 +50,7 @@ public class CustomNode<E> {
      * @param previousNodeValue
      *            value of the previous node value
      */
-    public void setPreviousNode(CustomNode<E> previousNodeValue) {
+    public void setPreviousNode(CustomNode<Heap> previousNodeValue) {
         previousNode = previousNodeValue;
     }
 
@@ -60,7 +60,7 @@ public class CustomNode<E> {
      * 
      * @return returns previous node variable value
      */
-    public CustomNode<E> getPreviousNode() {
+    public CustomNode<Heap> getPreviousNode() {
         return previousNode;
     }
 
@@ -70,7 +70,7 @@ public class CustomNode<E> {
      * 
      * @return returns next node variable value
      */
-    public CustomNode<E> getNextNode() {
+    public CustomNode<Heap> getNextNode() {
         return nextNode;
     }
 
@@ -80,7 +80,7 @@ public class CustomNode<E> {
      * 
      * @return returns the value of the node
      */
-    public E getData() {
+    public Heap getData() {
         return dataValue;
     }
 }

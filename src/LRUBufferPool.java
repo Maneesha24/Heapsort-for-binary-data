@@ -11,15 +11,15 @@ import java.io.RandomAccessFile;
 public class LRUBufferPool {
 
     private RandomAccessFile fileDisk;
-    private CustomDoublyLinkedList<LRUBuffer> lruBuffer;
     private LRUBuffer[] pool;
     private int sizeValue;
+    private CustomDoublyLinkedList<LRUBuffer> lruBuffer;
     private UtilsFunc utilsFunc;
 
     /**
      * This method initializes the buffer pool with the arguments taken
      * 
-     * @param file
+     * @param fileName
      *            file to be sorted
      * @param num
      *            is the number of buffers
@@ -28,13 +28,30 @@ public class LRUBufferPool {
      * @throws IOException
      *             thrown if file doesnt exist
      */
-    public LRUBufferPool(File file, int num, UtilsFunc utils)
+    public LRUBufferPool(File fileName, int num, UtilsFunc utils)
         throws IOException {
-        fileDisk = new RandomAccessFile(file, "rw");
+        fileDisk = new RandomAccessFile(fileName, "rw");
         sizeValue = ((int)fileDisk.length() / 4096);
         pool = new LRUBuffer[sizeValue];
         lruBuffer = new CustomDoublyLinkedList<LRUBuffer>(num);
         utilsFunc = utils;
+    }
+
+
+    /**
+     * checks to see if buffer was used
+     * 
+     * @param bufferValue
+     *            buffer to be checked
+     * @throws IOException
+     */
+    public void getUsed(LRUBuffer bufferValue) throws IOException {
+        // Returns the value if the value is either shifted or if its added
+        LRUBuffer removedValue = lruBuffer.shiftAddNode(bufferValue);
+        // Flush the buffer if the value is removed and if the buffer is used
+        if (removedValue != null && bufferValue.getBufferUsed()) {
+            bufferValue.flushBuffer();
+        }
     }
 
 
@@ -48,26 +65,13 @@ public class LRUBufferPool {
      *         pool
      */
     public LRUBuffer getBuffer(int indexVal) {
+        // If the value is null, create a new buffer value
         if (pool[indexVal] == null) {
             pool[indexVal] = new LRUBuffer(this, fileDisk, (indexVal * 4096),
                 4096, utilsFunc);
         }
+        // Return the value of buffer at the index in the pool
         return pool[indexVal];
-    }
-
-
-    /**
-     * checks to see if buffer was used
-     * 
-     * @param bufferValue
-     *            buffer to be checked
-     * @throws IOException
-     */
-    public void getUsed(LRUBuffer bufferValue) throws IOException {
-        LRUBuffer removedValue = lruBuffer.shiftAddNode(bufferValue);
-        if (removedValue != null && bufferValue.getBufferUsed()) {
-            bufferValue.flushBuffer();
-        }
     }
 
 
@@ -88,6 +92,7 @@ public class LRUBufferPool {
      */
     public void flush() throws IOException {
         for (int i = 0; i < sizeValue; i++) {
+            // This flushes all the buffers in the pool
             pool[i].flushBuffer();
         }
     }

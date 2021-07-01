@@ -84,6 +84,7 @@ public class CustomHeap {
             return;
         }
 
+        // If its not a leaf node in the heap, the while loop runs
         while (!((index >= heapSize / 2) && (index < heapSize))) {
             int leftChild = 2 * index + 1;
             int rightChild = leftChild + 1;
@@ -181,10 +182,10 @@ public class CustomHeap {
      */
     public void printOutput() throws IOException {
         int records = getNumOfRecords() / 1024;
-        for (int i = 0; i < records; i++) {
-            System.out.print(getKeyValue((i) * 1024) + " " + getValue((i)
-                * 1024) + " ");
-            if (((i + 1) % 8 == 0)) {
+        for (int i = 1; i <= records; i++) {
+            System.out.print(getKeyValue((i - 1) * 1024) + " " + getValue((i
+                - 1) * 1024) + " ");
+            if (((i) % 8 == 0)) {
                 System.out.print("\n");
             }
         }
